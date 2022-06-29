@@ -1,0 +1,51 @@
+Written Questions
+
+Q1. Run the web crawler using the configurations located at src/main/config/written_question_1a.json and
+    src/main/config/written_question_1b.json. The only difference between these configurations is that one always uses
+    the sequential crawler and the other always uses the parallel crawler. Inspect the profile output in
+    profileData.txt.
+
+    If you are using a multi-processor computer, you should notice that SequentialWebCrawler#crawl and
+    ParallelWebCrawler#crawl took about the same amount of time, but PageParserImpl#parse took much longer when run with
+    the ParallelWebCrawler.
+
+    Why did the parser take more time when run with ParallelWebCrawler?
+
+	Answer: The sequential crawl is faster because the time spent doing operations on each iteration is very small but in parallel crawl 	there is a fairly significant overhead involved with creating and managing multiple threads like switch time and managing task state 		that is at least more than simple opertaion of sequential that's why it took more time.
+
+
+Q2. Your manager ran your crawler on her old personal computer, using the configurations from Q1, and she notices that
+    the sequential crawler actually outperforms the parallel crawler. She would like to know why.
+
+    (a) Suggest one reason why the sequential web crawler was able to read more web pages than the parallel crawler.
+        (Hint: Try setting "parallelism" to 1 in the JSON configs to simulate your manager's computer.)
+	Answer: as from above hint setting "parallelism" to 1 in the JSON configs can imporove the performance as we are telling program to make 	no more than 1 parallel threads. so it will behave like sequential crawl and don't have to spend time managing tasks.
+
+    (b) Suggest one scenario in which the parallel web crawler will almost certainly perform better than the sequential
+        crawler. Why will it perform better?
+	Answer: There can be a scenario where crawler have to visit very large number of web pages with extremely large amount of text like 	wikipedia pages where computation on each website is greater. In that case parallel web crawler perform better than sequential.
+
+
+Q3. Analyze your method profiler through the lens of Aspect Oriented Programming, by answering the following questions:
+
+    (a) What cross-cutting concern is being addressed by the com.udacity.webcrawler.profiler.Profiler class?
+	Answer: The main concern addressed by the Profiler class is "logging" as the description and implementation of class says, It aggregates 	information about profiled method calls, and how long they took and the it will write that information into file by Writer
+    (b) What are the join points of the Profiler in the web crawler program?
+	Answer: The starting point of the Profiler is in WebCrawler interface class where it is initiated to have list of urls, then in 	WebCrawler module class where it is acting as webCrawler proxy in a singleton form.
+
+
+Q4. Identify three (3) different design patterns used in this project, and explain which interfaces, classes, and/or
+    libraries use or implement those design patterns.
+	Answer:
+	1. Singleton - Webcrawler class is using this pattern
+	2. Builder - Crawler configuration and CrawResult classes are using this pattern to provide objects from string mapping through Jakson
+	3. Factory - PageParse class uses this pattern to provide dynamic object at run time according to the provided options
+
+    For each pattern, name one thing about the pattern that you LIKED, and one thing you DISLIKED. If you did not like
+    anything, you can name two things you disliked.
+	Answer: 
+	1. Singleton- like: creating single object for overall work and avoid extra memory, dislike - what if we need keep track of different data by class's object we will need other object.
+	2. Builder - like : very helpfull as we need to create object with more fields, dislike: have to code more lines as compare to creating simple object
+	3. Factory - like: It's good when we don't know which object of subclass has to create. dislike: complex code which is less understandable and parallel hierarchy of classes
+
+
